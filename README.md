@@ -1,1 +1,3 @@
-# chatbot
+# npm install
+
+# node app.js
