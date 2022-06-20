@@ -28,3 +28,8 @@ $ npm install
 ```sh
 $ npm start
 ```
+### Testing in your browser
+
+```sh
+https://localhost:4200/
+```
