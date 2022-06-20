@@ -28,8 +28,20 @@ $ npm install
 ```sh
 $ npm start
 ```
-### Testing in your browser
+
+### Testing in your browser to reply every message
 
 ```sh
-https://localhost:4200/
+http://localhost:4200/?number=user1&mode=each
+```
+
+### Testing in your browser to reply only first message after timeout
+
+```sh
+http://localhost:4200/?number=user1&mode=first
+```
+### Testing in your browser to reply all messages in a single response
+
+```sh
+http://localhost:4200/?number=user1&mode=all
 ```
