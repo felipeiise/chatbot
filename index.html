@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <style type="text/css">
+            .user, .reply, .bot {
+                display: block;
+                padding: 5px;
+                margin: 5px;
+            }
+            .reply {
+                color: #fff;
+                background-color: #535353;
+            }
+            .bot {
+                background-color: #ccc;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>ChatClass Test</h1>
+        <div id="messages"></div>
+        <form id="form" id="chat_form">
+            <input id="chat_input" type="text" autocomplete="off">
+            <input type="submit" value="Send">
+        </form>
+        <script src="/jquery/dist/jquery.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+    </body>
+</html>
+<script>
+
+$.urlParam = function(name){
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (results == null) {
+       return null;
+    }
+    return decodeURI(results[1]) || 0;
+}
+
+const number = $.urlParam('number');
+const mode = $.urlParam('mode') || 'first';
+
+var socket = io.connect('http://localhost:4200');
+
+socket.on('connect', function(data) {
+    let message = 'Nova conexão de:';
+    socket.emit('join', number, message);
+});
+
+socket.on('broad', function(data) {
+    $('#messages').append(data);
+});
+
+$('form').submit(function(e){
+	e.preventDefault();
+	var message = $('#chat_input').val();
+	socket.emit('messages', mode, number, message);
+	$('#chat_input').val('');
+});
+
+</script>

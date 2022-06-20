@@ -1,0 +1,60 @@
+Problem:  Muitas pessoas usam um robo de zap devagar
+
+Sc - 0
+CURRENT UX in ZAP
+User: 
+Oi 1
+Oi 2
+Oi 3
+Oi 4
+BOT:
+Echo oi 1 
+Echo oi 2 
+Echo oi 3 
+Echo oi 4 
+
+BETTER UX IN ZAP
+User: 
+Oi 1
+Oi 2
+Oi 3
+Oi 4
+BOT:
+Echo: Oi 1
+Echo: Oi fulano2
+Oi fulano3
+Oi fulano4
+
+Sc0 - responder todas as msgm com echo
+Sc1 - descartar todas as msgm ate a primeira foi respondida
+Sc2 - juntar as msgm todas e tratar eles como um input so
+
+------
+Como programar sc1  - pseudocode
+
+Webhook → msg para controller
+
+Msg
+number: wa number
+content:  text simple string
+
+
+
+Controller (msg, context) {
+	recipient = msg.number;  
+	text = msg.content;
+
+	Sleep (random(500-30000ms));		
+	sender.sentToZap( recipient, “echo: “+ text )
+}
+
+//-------------------
+
+slowOperationFunction(param) {
+	
+}
+// result = await slowOperationFunction (param).  // causar um demoro aleatorio (5-30 segundos)
+
+
+
+
