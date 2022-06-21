@@ -3,10 +3,10 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
-const { host, port, password } = require('./redis');
+const { host } = require('./redis');
 
 const Redis = require('ioredis');
-const redis = new Redis();
+const redis = new Redis(host);
 
 const { uuidEmit } = require('uuid-timestamp');
 const { exit } = require('process');
