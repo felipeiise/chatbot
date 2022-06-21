@@ -3,10 +3,13 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
-const Redis = require("ioredis");
+const { host, port, password } = require('./redis');
+
+const Redis = require('ioredis');
 const redis = new Redis();
 
 const { uuidEmit } = require('uuid-timestamp');
+const { exit } = require('process');
 
 const RESPONSE_TIME = 5000;
 
