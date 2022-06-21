@@ -3,10 +3,10 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
-const { host } = require('./redis');
+const { HOST, PORT, REDIS_URL } = require('./config');
 
 const Redis = require('ioredis');
-const redis = new Redis(host);
+const redis = new Redis(REDIS_URL);
 
 const { uuidEmit } = require('uuid-timestamp');
 const { exit } = require('process');
@@ -128,4 +128,4 @@ async function getAndReplyAll(number) {
 
 }
 
-server.listen(4200);
+server.listen(PORT, HOST);
