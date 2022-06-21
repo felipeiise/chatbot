@@ -30,7 +30,7 @@
 <script>
 
 $.urlParam = function(name){
-    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    const results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     if (results == null) {
        return null;
     }
@@ -40,7 +40,9 @@ $.urlParam = function(name){
 const number = $.urlParam('number');
 const mode = $.urlParam('mode') || 'first';
 
-var socket = io.connect('http://localhost:4200');
+const url = document.location.origin;
+
+const socket = io.connect(`${url}`);
 
 socket.on('connect', function(data) {
     let message = 'Nova conexão de:';
@@ -53,7 +55,7 @@ socket.on('broad', function(data) {
 
 $('form').submit(function(e){
 	e.preventDefault();
-	var message = $('#chat_input').val();
+	const message = $('#chat_input').val();
 	socket.emit('messages', mode, number, message);
 	$('#chat_input').val('');
 });
