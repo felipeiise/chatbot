@@ -38,14 +38,67 @@ Msg
 number: wa number
 content:  text simple string
 
+de onde vem as mensagens???
 
+mode = first | each | all
 
 Controller (msg, context) {
-	recipient = msg.number;  
+
+	mode = env.MODE;
+	
+	recipient = msg.number;
 	text = msg.content;
 
-	Sleep (random(500-30000ms));		
-	sender.sentToZap( recipient, “echo: “+ text )
+	if (mode === 'each') { // responde todas as mensagens
+
+		sender.sentToZap(recipient, "Resposta: " + text);
+
+	} else if (mode === 'first') {
+
+		lock = getLock(recipient); // obtem o lock para o número do usuário
+
+		// comparar como "string" no caso do Redis
+		
+		if(lock !== 'true') { // primeira mensagem recebida, caso lock não seja especificamente 'true'
+			
+			setLock(recipient, 'true'); // trava a resposta de novas mensagens
+
+			Sleep(random(500-30000ms)); // simula uma lentidão na resposta do chatbot
+
+			sender.sentToZap(recipient, text);
+
+			setLock(recipient, 'false'); // libera a resposta de novas mensagens
+
+		}
+
+	} else if (mode === 'all') { // responde todas as mensagens de uma única vez
+	
+		lock = getLock(recipient); // obtem o lock para o número do usuário
+
+		saveMessage(recipient, text); // salva todas as mensagens recebidas em uma sessão, banco, etc...
+		
+		if(lock !== 'true') {
+			
+			setLock(recipient, 'true'); // trava a resposta de novas mensagens
+
+			Sleep(random(500-30000ms)); // simula uma lentidão na resposta do chatbot
+
+			multipleMessages = getMessages(recipient);
+
+			sender.sentToZap(recipient, multipleMessages);
+
+			setLock(recipient, 'false'); // libera a resposta de novas mensagens
+
+			deleteMessages(recipient);
+
+		}
+
+	}
+
+}
+
+saveMessage(number = null) { // salva a mensagem no banco, redis, etc...
+	redis.lpush('');
 }
 
 //-------------------

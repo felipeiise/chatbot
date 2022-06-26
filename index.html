@@ -54,10 +54,13 @@ socket.on('broad', function(data) {
 });
 
 $('form').submit(function(e){
-	e.preventDefault();
-	const message = $('#chat_input').val();
+    e.preventDefault();
+    const message = $('#chat_input').val().trim();
+    $('#chat_input').val('').focus();
+    if (message === '') { // se a mensagem for vazia para o processamento
+        return;
+    }
 	socket.emit('messages', mode, number, message);
-	$('#chat_input').val('');
 });
 
 </script>
