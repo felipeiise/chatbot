@@ -66,15 +66,13 @@ io.on('connection', (client) => {
 
             timeout = randomInteger(2500, 5000);
 
-            const isLocked = await getLock(number);
+            const isLocked = await getSetLock(number);
 
             if (isLocked === 'true') {
                 console.log('Mensagem descartada até a primeira mensagem ser respondida');
             } else {
                 saveMessage(number, message, message_id);
-                setLock(number, true);
                 console.log('Primeira mensagem');
-
                 setTimeout(() => {
                     doReply(mode, number, message_id);
                 }, timeout);
@@ -88,8 +86,8 @@ io.on('connection', (client) => {
 
 });
 
-async function getLock(number) {
-    return await redis.get(`lock_${number}`).then((result) => {
+async function getSetLock(number) {
+    return await redis.getset(`lock_${number}`, true).then((result) => {
         console.log('getLock: ' + result);
         return result;
     });
